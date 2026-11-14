@@ -1,14 +1,8 @@
 {
-  "builds": [
+  "rewrites": [
     {
-      "src": "hsb_learn/app.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "hsb_learn/app.py"
+      "source": "/(.*)",
+      "destination": "/api/index.py"
     }
   ]
 }

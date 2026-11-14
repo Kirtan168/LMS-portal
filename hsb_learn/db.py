@@ -5,21 +5,58 @@ SQLite persistent database for MBA Product Management LMS
 
 import sqlite3
 import os
+import shutil
 import json
 from datetime import datetime, timezone
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = BASE_DIR / "data"
-DB_PATH = DATA_DIR / "hsb_learn.db"
-UPLOADS_DIR = DATA_DIR / "uploads"
 
-# Ensure directories exist
-DATA_DIR.mkdir(parents=True, exist_ok=True)
-UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+# Support serverless read-only environments (e.g. Vercel / AWS Lambda)
+IS_SERVERLESS = bool(os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"))
+if not IS_SERVERLESS:
+    try:
+        # Check if local directory is writable
+        test_file = BASE_DIR / ".write_test"
+        test_file.touch()
+        test_file.unlink()
+    except Exception:
+        IS_SERVERLESS = True
+
+if IS_SERVERLESS:
+    DATA_DIR = Path("/tmp/hsb_learn_data")
+    DB_PATH = DATA_DIR / "hsb_learn.db"
+    UPLOADS_DIR = DATA_DIR / "uploads"
+    try:
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+        # Copy bundled starter database to /tmp if available
+        ORIG_DB = BASE_DIR / "data" / "hsb_learn.db"
+        if ORIG_DB.exists() and not DB_PATH.exists():
+            shutil.copy2(ORIG_DB, DB_PATH)
+    except Exception as e:
+        print(f"Serverless storage warning: {e}")
+else:
+    DATA_DIR = BASE_DIR / "data"
+    DB_PATH = DATA_DIR / "hsb_learn.db"
+    UPLOADS_DIR = DATA_DIR / "uploads"
+    try:
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
 
 
 def get_db():
+    # If in serverless and DB does not exist yet in /tmp, copy from repository bundle
+    if IS_SERVERLESS and not DB_PATH.exists():
+        ORIG_DB = BASE_DIR / "data" / "hsb_learn.db"
+        if ORIG_DB.exists():
+            try:
+                DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ORIG_DB, DB_PATH)
+            except Exception:
+                pass
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")

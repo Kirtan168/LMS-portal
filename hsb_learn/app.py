@@ -16,12 +16,20 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from .db import get_db, init_db, UPLOADS_DIR
-from .parsers import extract_text_from_file
-from .ai_service import generate_short_notes, generate_quiz, test_llm_connection
+try:
+    from .db import get_db, init_db, UPLOADS_DIR
+    from .parsers import extract_text_from_file
+    from .ai_service import generate_short_notes, generate_quiz, test_llm_connection
+except (ImportError, ValueError):
+    from hsb_learn.db import get_db, init_db, UPLOADS_DIR
+    from hsb_learn.parsers import extract_text_from_file
+    from hsb_learn.ai_service import generate_short_notes, generate_quiz, test_llm_connection
 
-# Initialize Database on startup
-init_db()
+# Initialize Database on startup safely
+try:
+    init_db()
+except Exception as e:
+    print(f"Startup DB init warning: {e}")
 
 app = FastAPI(
     title="HSB Learn - AI-Powered MBA Learning Management System",
