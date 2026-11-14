@@ -1,0 +1,213 @@
+/* HSB Learn - Modern Academic LMS Stylesheet */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: #f8fafc;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Glassmorphism Accents */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.glass-nav {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Notion-like Markdown Typography */
+.markdown-body {
+  font-size: 0.975rem;
+  line-height: 1.75;
+  color: #1e293b;
+}
+
+.markdown-body h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.markdown-body h2 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-top: 1.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-body h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #334155;
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.markdown-body p {
+  margin-bottom: 0.85rem;
+}
+
+.markdown-body ul, .markdown-body ol {
+  margin-bottom: 0.85rem;
+  padding-left: 1.35rem;
+}
+
+.markdown-body ul {
+  list-style-type: disc;
+}
+
+.markdown-body ol {
+  list-style-type: decimal;
+}
+
+.markdown-body li {
+  margin-bottom: 0.3rem;
+}
+
+.markdown-body blockquote {
+  border-left: 4px solid #4f46e5;
+  background-color: #f1f5f9;
+  padding: 0.75rem 1rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  margin: 1rem 0;
+  color: #334155;
+}
+
+.markdown-body blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.markdown-body th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #cbd5e1;
+}
+
+.markdown-body td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e2e8f0;
+}
+
+.markdown-body code {
+  font-family: var(--font-mono);
+  background-color: #f1f5f9;
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  color: #d946ef;
+}
+
+.markdown-body pre code {
+  display: block;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: #0f172a;
+  color: #f8fafc;
+  overflow-x: auto;
+}
+
+/* Modal Animation */
+.modal-enter {
+  opacity: 0;
+  transform: scale(0.96) translateY(8px);
+}
+.modal-enter-active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: opacity 180ms ease-out, transform 180ms ease-out;
+}
+
+/* Quiz Option Hover & Selection */
+.quiz-opt {
+  transition: all 0.15s ease-in-out;
+}
+.quiz-opt:hover {
+  transform: translateY(-1px);
+}
+
+/* Toast Notifications */
+#toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  animation: toastSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Print styling for PDF export */
+@media print {
+  body {
+    background: white !important;
+  }
+  aside, nav, header, button, .no-print {
+    display: none !important;
+  }
+  #note-print-area {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}

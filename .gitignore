@@ -1,0 +1,20 @@
+# Exclude separate project
+zenith26-fest-system/
+
+# Python cache & artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment files
+.env
+
+# Temporary files
+*.tmp
+*.log
